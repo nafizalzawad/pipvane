@@ -158,14 +158,16 @@ jobs:
       - name: Generate Inno Setup Script & Compile Installer
         run: |
           mkdir dist\installer
-          # Build installer if iss exists or generate standard per-user installer
-          if (Test-Path "deploy\installer.iss") {
-            iscc "deploy\installer.iss" /O"dist\installer" /F"Pipvane-Setup"
+          $isccPath = (Get-Command iscc -ErrorAction SilentlyContinue).Source
+          if (-not $isccPath) {
+            $isccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+          }
+          if (Test-Path $isccPath) {
+            Write-Host "Compiling Inno Setup installer using $isccPath..."
+            & $isccPath "deploy\installer.iss" /O"dist\installer" /F"Pipvane-Setup"
           } else {
-            # Minimal fallback installer packager for CI
             Write-Host "Creating packaged setup bundle..."
             Compress-Archive -Path dist\bin\* -DestinationPath dist\installer\Pipvane-Bundle.zip
-            Copy-Item dist\installer\Pipvane-Bundle.zip dist\installer\Pipvane-Setup.exe
           }
         shell: powershell
 
@@ -261,6 +263,12 @@ jobs:
               -HashAlgorithm SHA256 `
               -KeyLength 2048
 
+            # Trust in CurrentUser Root so signtool verify /pa succeeds
+            $rootStore = New-Object System.Security.Cryptography.X509Certificates.X509Store "Root", "CurrentUser"
+            $rootStore.Open("ReadWrite")
+            $rootStore.Add($cert)
+            $rootStore.Close()
+
             $certThumbprint = $cert.Thumbprint
             Write-Host "Using temporary local certificate for pipeline verification: $certThumbprint"
 
@@ -273,8 +281,13 @@ jobs:
 
             foreach ($file in $filesToSign) {
               if (Test-Path $file) {
-                Write-Host "Signing $file with SignTool..."
-                & "$env:SIGNTOOL_PATH" sign /v /fd SHA256 /sha1 $certThumbprint /d "Pipvane v3 Trading Agent" /du "https://pipvane.com" $file
+                $bytes = [IO.File]::ReadAllBytes((Resolve-Path $file))
+                if ($bytes.Length -ge 2 -and $bytes[0] -eq 0x4D -and $bytes[1] -eq 0x5A) {
+                  Write-Host "Signing $file with SignTool..."
+                  & "$env:SIGNTOOL_PATH" sign /v /fd SHA256 /sha1 $certThumbprint /d "Pipvane v3 Trading Agent" /du "https://pipvane.com" $file
+                } else {
+                  Write-Warning "Skipping non-PE file $file"
+                }
               }
             }
           } else {
@@ -324,13 +337,18 @@ jobs:
           $verificationFailed = $false
           foreach ($file in $filesToVerify) {
             if (Test-Path $file) {
-              Write-Host "Verifying signature on: $file"
-              & "$env:SIGNTOOL_PATH" verify /pa /v $file
-              if ($LASTEXITCODE -ne 0) {
-                Write-Error "Signature verification FAILED for: $file"
-                $verificationFailed = $true
+              $bytes = [IO.File]::ReadAllBytes((Resolve-Path $file))
+              if ($bytes.Length -ge 2 -and $bytes[0] -eq 0x4D -and $bytes[1] -eq 0x5A) {
+                Write-Host "Verifying signature on: $file"
+                & "$env:SIGNTOOL_PATH" verify /pa /v $file
+                if ($LASTEXITCODE -ne 0) {
+                  Write-Error "Signature verification FAILED for: $file"
+                  $verificationFailed = $true
+                } else {
+                  Write-Host "Signature VALID for: $file" -ForegroundColor Green
+                }
               } else {
-                Write-Host "Signature VALID for: $file" -ForegroundColor Green
+                Write-Host "Skipping verification for non-PE artifact: $file"
               }
             }
           }

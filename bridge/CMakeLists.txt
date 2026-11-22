@@ -38,21 +38,11 @@ if (MSVC)
         WINVER=0x0A00
     )
 
-    # Security Hardening & Ruthless Optimization Flags:
-    #  /O2        : Maximize execution speed
-    #  /Oi        : Enable intrinsic functions
-    #  /GL        : Whole program optimization
-    #  /GS        : Buffer security check (Stack Canary)
-    #  /guard:cf  : Control Flow Guard (CFG)
-    #  /W3        : Warning Level 3
-    #  /fp:fast   : Fast floating-point model
-    #  /MP        : Multi-processor compilation
+    # Security Hardening & Optimization Flags:
     target_compile_options(${BRIDGE_TARGET_NAME} PRIVATE
         /O2
         /Oi
-        /GL
         /GS
-        /guard:cf
         /W3
         /permissive-
         /fp:fast
@@ -62,16 +52,11 @@ if (MSVC)
     # Base Linker Options:
     #  /DYNAMICBASE    : Address Space Layout Randomization (ASLR)
     #  /NXCOMPAT       : Data Execution Prevention (DEP)
-    #  /LTCG           : Link-Time Code Generation
-    #  /guard:cf       : Control Flow Guard for Linker
     #  /OPT:REF        : Eliminate unreferenced functions
     #  /OPT:ICF        : Identical COMDAT folding
-    #  /DEF            : Module definition file for exact unmangled MQL exports
     target_link_options(${BRIDGE_TARGET_NAME} PRIVATE
         /DYNAMICBASE
         /NXCOMPAT
-        /LTCG
-        /guard:cf
         /OPT:REF
         /OPT:ICF
     )
@@ -79,7 +64,6 @@ if (MSVC)
     if (CMAKE_SIZEOF_VOID_P EQUAL 4)
         # 32-bit x86 Specific Hardening & Architecture
         target_compile_options(${BRIDGE_TARGET_NAME} PRIVATE /arch:SSE2)
-        target_link_options(${BRIDGE_TARGET_NAME} PRIVATE /SAFESEH:NO)
     else()
         # 64-bit x64 Specific Hardening
         target_link_options(${BRIDGE_TARGET_NAME} PRIVATE /HIGHENTROPYVA) # 64-bit ASLR

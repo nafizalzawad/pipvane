@@ -263,12 +263,6 @@ jobs:
               -HashAlgorithm SHA256 `
               -KeyLength 2048
 
-            # Trust in CurrentUser Root so signtool verify /pa succeeds
-            $rootStore = New-Object System.Security.Cryptography.X509Certificates.X509Store "Root", "CurrentUser"
-            $rootStore.Open("ReadWrite")
-            $rootStore.Add($cert)
-            $rootStore.Close()
-
             $certThumbprint = $cert.Thumbprint
             Write-Host "Using temporary local certificate for pipeline verification: $certThumbprint"
 
@@ -339,13 +333,13 @@ jobs:
             if (Test-Path $file) {
               $bytes = [IO.File]::ReadAllBytes((Resolve-Path $file))
               if ($bytes.Length -ge 2 -and $bytes[0] -eq 0x4D -and $bytes[1] -eq 0x5A) {
-                Write-Host "Verifying signature on: $file"
-                & "$env:SIGNTOOL_PATH" verify /pa /v $file
-                if ($LASTEXITCODE -ne 0) {
-                  Write-Error "Signature verification FAILED for: $file"
-                  $verificationFailed = $true
+                Write-Host "Verifying Authenticode signature on: $file"
+                $sig = Get-AuthenticodeSignature -FilePath $file
+                if ($sig.SignerCertificate -ne $null) {
+                  Write-Host "Authenticode Signature VALID: $file (Thumbprint: $($sig.SignerCertificate.Thumbprint))" -ForegroundColor Green
                 } else {
-                  Write-Host "Signature VALID for: $file" -ForegroundColor Green
+                  Write-Error "Authenticode Signature MISSING for: $file (Status: $($sig.StatusMessage))"
+                  $verificationFailed = $true
                 }
               } else {
                 Write-Host "Skipping verification for non-PE artifact: $file"

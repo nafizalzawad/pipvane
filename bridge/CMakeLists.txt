@@ -34,6 +34,8 @@ if (MSVC)
         NOMINMAX
         _CRT_SECURE_NO_WARNINGS
         PIPVANE_BRIDGE_EXPORTS
+        _WIN32_WINNT=0x0A00
+        WINVER=0x0A00
     )
 
     # Security Hardening & Ruthless Optimization Flags:

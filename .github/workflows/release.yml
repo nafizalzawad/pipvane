@@ -358,11 +358,13 @@ jobs:
       - name: Generate SHA-256 Checksums Manifest
         run: |
           cd release_artifacts
-          Get-ChildItem -Recurse -File | ForEach-Object {
-            $hash = (Get-FileHash -Path $_.FullName -Algorithm SHA256).Hash.ToLower()
-            $relPath = Resolve-Path -Path $_.FullName -Relative
+          $files = @(Get-ChildItem -Recurse -File | Where-Object { $_.Name -ne "SHA256SUMS.txt" })
+          $lines = foreach ($file in $files) {
+            $hash = (Get-FileHash -Path $file.FullName -Algorithm SHA256).Hash.ToLower()
+            $relPath = Resolve-Path -Path $file.FullName -Relative
             "$hash  $relPath"
-          } | Out-File -FilePath "SHA256SUMS.txt" -Encoding utf8
+          }
+          $lines | Out-File -FilePath "SHA256SUMS.txt" -Encoding utf8
           Get-Content "SHA256SUMS.txt"
         shell: powershell
 

@@ -73,13 +73,12 @@ if (MSVC)
         /guard:cf
         /OPT:REF
         /OPT:ICF
-        /DEF:${CMAKE_CURRENT_SOURCE_DIR}/PipvaneBridge.def
     )
 
     if (CMAKE_SIZEOF_VOID_P EQUAL 4)
         # 32-bit x86 Specific Hardening & Architecture
         target_compile_options(${BRIDGE_TARGET_NAME} PRIVATE /arch:SSE2)
-        target_link_options(${BRIDGE_TARGET_NAME} PRIVATE /SAFESEH) # Safe Exception Handlers
+        target_link_options(${BRIDGE_TARGET_NAME} PRIVATE /SAFESEH:NO)
     else()
         # 64-bit x64 Specific Hardening
         target_link_options(${BRIDGE_TARGET_NAME} PRIVATE /HIGHENTROPYVA) # 64-bit ASLR

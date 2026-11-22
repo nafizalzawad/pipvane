@@ -35,9 +35,6 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v4
 
-      - name: Setup MSVC Developer Command Prompt
-        uses: ilammy/msvc-dev-cmd@v1
-
       - name: Configure CMake (32-bit x86 for MetaTrader 4)
         run: |
           cmake -B bridge/build_x86 -S bridge -A Win32 -DCMAKE_BUILD_TYPE=Release
@@ -45,7 +42,7 @@ jobs:
 
       - name: Compile 32-bit DLL (ipc_bridge_x86.dll)
         run: |
-          cmake --build bridge/build_x86 --config Release --target ipc_bridge_x86
+          cmake --build bridge/build_x86 --config Release
         shell: cmd
 
       - name: Configure CMake (64-bit x64 for MetaTrader 5)
@@ -55,14 +52,14 @@ jobs:
 
       - name: Compile 64-bit DLL (PipvaneBridge.dll)
         run: |
-          cmake --build bridge/build_x64 --config Release --target PipvaneBridge
+          cmake --build bridge/build_x64 --config Release
         shell: cmd
 
       - name: Stage Bridge DLL Artifacts
         run: |
-          mkdir dist\bin\bridge
-          copy bridge\build_x86\Release\ipc_bridge_x86.dll dist\bin\bridge\
-          copy bridge\build_x64\Release\PipvaneBridge.dll dist\bin\bridge\
+          if not exist dist\bin\bridge mkdir dist\bin\bridge
+          copy /Y bridge\build_x86\Release\*.dll dist\bin\bridge\
+          copy /Y bridge\build_x64\Release\*.dll dist\bin\bridge\
           dir dist\bin\bridge
         shell: cmd
 
@@ -114,7 +111,7 @@ jobs:
             --name "pipvane-engine" `
             --add-data "frontend/out;frontend/out" `
             --add-data "engine/data;engine/data" `
-            engine/__init__.py
+            main.py
         shell: powershell
 
       - name: Stage Engine Artifacts

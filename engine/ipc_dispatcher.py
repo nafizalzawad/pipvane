@@ -29,6 +29,7 @@ from engine.ipc_protocol import (
     CapabilitiesPayload,
     TerminalStatus,
     NamedPipeOpcode,
+    PositionItem,
 )
 from engine.shm_writer import ShmRingBufferWriter
 from engine.named_pipe_server import AsyncNamedPipeServer

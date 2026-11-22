@@ -85,13 +85,15 @@ async def test_ipc_latency_benchmark_quality_gate_failure(tmp_path):
 def test_ipc_latency_benchmark_cli_run():
     """Verify that the standalone CLI script runs and exits with code 0."""
     script_path = os.path.join(PROJECT_ROOT, "ipc_latency_benchmark.py")
+    env = dict(os.environ, PYTHONIOENCODING="utf-8")
     res = subprocess.run(
         [sys.executable, script_path, "--iterations", "300", "--warmup", "50", "--terminal-id", "test_cli_bench"],
         capture_output=True,
         text=True,
         timeout=15,
+        env=env,
     )
     assert res.returncode == 0, f"Benchmark script failed: {res.stderr}\n{res.stdout}"
     assert "QUALITY GATE SATISFIED" in res.stdout
     assert "Median Latency" in res.stdout
-    assert "✓ PASS" in res.stdout
+    assert "[PASS]" in res.stdout

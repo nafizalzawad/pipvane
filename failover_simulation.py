@@ -642,17 +642,17 @@ class FailoverSimulationOrchestrator:
         print("=" * 65)
         print(" ARCHITECTURAL COMPLIANCE VERIFICATION:")
         # Invariant check status
-        sym_inv = "✓ PASS" if r["double_active_violations"] == 0 else "✗ FAIL"
+        sym_inv = "[PASS]" if r["double_active_violations"] == 0 else "[FAIL]"
         col_inv = GREEN if r["double_active_violations"] == 0 else RED
         print(f"   [1] Invariant |A(t)| <= 1:           {col_inv}{sym_inv} (0 concurrent active states){RESET}")
 
         # Standby lock check status
-        sym_lock = "✓ PASS" if success else "✗ FAIL"
+        sym_lock = "[PASS]" if success else "[FAIL]"
         col_lock = GREEN if success else RED
         print(f"   [2] Standby Reconnect Lock (FR-7.4): {col_lock}{sym_lock} (Node A strictly Standby){RESET}")
 
         # TTL Takeover check status
-        sym_take = "✓ PASS" if success else "✗ FAIL"
+        sym_take = "[PASS]" if success else "[FAIL]"
         col_take = GREEN if success else RED
         print(f"   [3] 30s TTL Expiry Takeover:        {col_take}{sym_take} (Node B safely promoted){RESET}")
         print("=" * 65 + "\n")

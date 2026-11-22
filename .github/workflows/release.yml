@@ -42,7 +42,7 @@ jobs:
 
       - name: Compile 32-bit DLL (ipc_bridge_x86.dll)
         run: |
-          cmake --build bridge/build_x86 --config Release > build_x86.log 2>&1 || (python bridge/report_build_failure.py build_x86.log && exit /b 1)
+          cmake --build bridge/build_x86 --config Release
         shell: cmd
 
       - name: Configure CMake (64-bit x64 for MetaTrader 5)
@@ -52,7 +52,7 @@ jobs:
 
       - name: Compile 64-bit DLL (PipvaneBridge.dll)
         run: |
-          cmake --build bridge/build_x64 --config Release > build_x64.log 2>&1 || (python bridge/report_build_failure.py build_x64.log && exit /b 1)
+          cmake --build bridge/build_x64 --config Release
         shell: cmd
 
       - name: Stage Bridge DLL Artifacts

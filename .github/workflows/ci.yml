@@ -86,6 +86,7 @@ jobs:
       - name: Execute Pytest Engine & Chaos Suite
         env:
           PYTHONPATH: .
+          PYTHONIOENCODING: utf-8
         run: |
           python -m pytest qa/tests qa/chaos -v --durations=10 --tb=short --junitxml=pytest-results.xml
 
@@ -126,6 +127,7 @@ jobs:
       - name: Execute 1,500-Signal Golden Set Parser Quality & Regression Gate
         env:
           PYTHONPATH: .
+          PYTHONIOENCODING: utf-8
         run: |
           python qa/test_golden_parser.py --dataset qa/golden_set_1500.json --baseline qa/baseline_accuracy.json --threshold 0.98 --max-regression 0.005
 
@@ -228,6 +230,7 @@ jobs:
       - name: Execute High-Resolution IPC Benchmark Harness
         env:
           PYTHONPATH: .
+          PYTHONIOENCODING: utf-8
         run: |
           python qa/benchmark/latency_benchmark.py
 

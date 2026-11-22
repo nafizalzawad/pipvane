@@ -78,11 +78,13 @@ async def test_failover_simulation_detects_synthetic_split_brain():
 def test_failover_simulation_cli_run():
     """Verify that failover_simulation.py CLI executes and exits with code 0."""
     script_path = os.path.join(PROJECT_ROOT, "failover_simulation.py")
+    env = dict(os.environ, PYTHONIOENCODING="utf-8")
     res = subprocess.run(
         [sys.executable, script_path, "--runs", "50", "--quiet"],
         capture_output=True,
         text=True,
         timeout=15,
+        env=env,
     )
     assert res.returncode == 0, f"Simulation failed: {res.stderr}\n{res.stdout}"
     assert "SPLIT-BRAIN GATE SATISFIED" in res.stdout
@@ -94,13 +96,15 @@ def test_failover_simulation_cli_run():
 def test_failover_simulation_cli_exit_code_1_on_violation():
     """Verify that failover_simulation.py CLI explicitly fails (exit code 1) on double-active state."""
     script_path = os.path.join(PROJECT_ROOT, "failover_simulation.py")
+    env = dict(os.environ, PYTHONIOENCODING="utf-8")
     res = subprocess.run(
         [sys.executable, script_path, "--runs", "10", "--inject-split-brain-at", "4", "--quiet"],
         capture_output=True,
         text=True,
         timeout=15,
+        env=env,
     )
     assert res.returncode == 1, "CLI must exit with code 1 when split-brain is detected"
     assert "DOUBLE-ACTIVE STATE DETECTED" in res.stdout
     assert "Dual-Active Violations:" in res.stdout
-    assert "✗ FAIL" in res.stdout
+    assert "[FAIL]" in res.stdout

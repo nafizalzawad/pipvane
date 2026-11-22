@@ -13,7 +13,9 @@
  * =============================================================================
  */
 
+#ifndef PIPVANE_BRIDGE_EXPORTS
 #define PIPVANE_BRIDGE_EXPORTS
+#endif
 
 #include "ipc_bridge.h"
 
@@ -1144,7 +1146,7 @@ PIPVANE_API int PIPVANE_CALL Pipvane_SendAccountState(
     int      pending_orders_count,
     int      is_connected_to_broker
 ) {
-    return ReportTerminalState(account_login, balance, equity, margin, freeMargin, margin_level, open_positions_count, pending_orders_count, is_connected_to_broker);
+    return ReportTerminalState(account_login, balance, equity, margin, free_margin, margin_level, open_positions_count, pending_orders_count, is_connected_to_broker);
 }
 
 PIPVANE_API int PIPVANE_CALL Pipvane_SendExecutionFeedback(

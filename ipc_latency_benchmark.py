@@ -318,36 +318,36 @@ class IPCLatencyBenchmark:
         print(f" Burst Wall-Clock Time:   {BOLD}{m['total_wall_sec']:.3f} s{RESET}")
         print(f" Sustained Throughput:    {BOLD}{m['throughput_ops_sec']:,.1f} orders/sec{RESET}")
         print("-" * 65)
-        print(f" {'METRIC':<24} | {'LATENCY (ms)':<16} | {'LATENCY (µs)':<16}")
+        print(f" {'METRIC':<24} | {'LATENCY (ms)':<16} | {'LATENCY (us)':<16}")
         print("-" * 65)
-        print(f" {'Minimum':<24} | {m['min_ms']:>10.4f} ms    | {m['min_ms']*1000:>10.1f} µs")
-        print(f" {'Mean (Average)':<24} | {m['mean_ms']:>10.4f} ms    | {m['mean_ms']*1000:>10.1f} µs")
-        print(f" {'Std Deviation':<24} | {m['stdev_ms']:>10.4f} ms    | {m['stdev_ms']*1000:>10.1f} µs")
+        print(f" {'Minimum':<24} | {m['min_ms']:>10.4f} ms    | {m['min_ms']*1000:>10.1f} us")
+        print(f" {'Mean (Average)':<24} | {m['mean_ms']:>10.4f} ms    | {m['mean_ms']*1000:>10.1f} us")
+        print(f" {'Std Deviation':<24} | {m['stdev_ms']:>10.4f} ms    | {m['stdev_ms']*1000:>10.1f} us")
         print("-" * 65)
         p50_str = f"{BOLD}{m['p50_ms']:>10.4f} ms{RESET}"
-        p50_us = f"{BOLD}{m['p50_ms']*1000:>10.1f} µs{RESET}"
+        p50_us = f"{BOLD}{m['p50_ms']*1000:>10.1f} us{RESET}"
         print(f" {'Median (P50)':<24} | {p50_str}    | {p50_us}")
-        print(f" {'75th Percentile (P75)':<24} | {m['p75_ms']:>10.4f} ms    | {m['p75_ms']*1000:>10.1f} µs")
-        print(f" {'90th Percentile (P90)':<24} | {m['p90_ms']:>10.4f} ms    | {m['p90_ms']*1000:>10.1f} µs")
-        print(f" {'95th Percentile (P95)':<24} | {m['p95_ms']:>10.4f} ms    | {m['p95_ms']*1000:>10.1f} µs")
+        print(f" {'75th Percentile (P75)':<24} | {m['p75_ms']:>10.4f} ms    | {m['p75_ms']*1000:>10.1f} us")
+        print(f" {'90th Percentile (P90)':<24} | {m['p90_ms']:>10.4f} ms    | {m['p90_ms']*1000:>10.1f} us")
+        print(f" {'95th Percentile (P95)':<24} | {m['p95_ms']:>10.4f} ms    | {m['p95_ms']*1000:>10.1f} us")
         p99_str = f"{BOLD}{m['p99_ms']:>10.4f} ms{RESET}"
-        p99_us = f"{BOLD}{m['p99_ms']*1000:>10.1f} µs{RESET}"
+        p99_us = f"{BOLD}{m['p99_ms']*1000:>10.1f} us{RESET}"
         print(f" {'99th Percentile (P99)':<24} | {p99_str}    | {p99_us}")
-        print(f" {'99.9th Percentile':<24} | {m['p99_9_ms']:>10.4f} ms    | {m['p99_9_ms']*1000:>10.1f} µs")
-        print(f" {'Maximum (Worst)':<24} | {m['max_ms']:>10.4f} ms    | {m['max_ms']*1000:>10.1f} µs")
+        print(f" {'99.9th Percentile':<24} | {m['p99_9_ms']:>10.4f} ms    | {m['p99_9_ms']*1000:>10.1f} us")
+        print(f" {'Maximum (Worst)':<24} | {m['max_ms']:>10.4f} ms    | {m['max_ms']*1000:>10.1f} us")
         print("=" * 65)
         print(" QUALITY GATE ASSERTION COMPLIANCE:")
 
         # Check P50 assertion
         med_color = GREEN if m["median_passed"] else RED
-        med_sym = "✓ PASS" if m["median_passed"] else "✗ FAIL"
-        med_val = f"{m['p50_ms']:.4f} ms / {m['p50_ms']*1000:.1f} µs"
+        med_sym = "[PASS]" if m["median_passed"] else "[FAIL]"
+        med_val = f"{m['p50_ms']:.4f} ms / {m['p50_ms']*1000:.1f} us"
         print(f"   [1] Median Latency <= {m['median_threshold_ms']:.1f} ms:  {med_color}{med_sym} ({med_val}){RESET}")
 
         # Check P99 assertion
         p99_color = GREEN if m["p99_passed"] else RED
-        p99_sym = "✓ PASS" if m["p99_passed"] else "✗ FAIL"
-        p99_val = f"{m['p99_ms']:.4f} ms / {m['p99_ms']*1000:.1f} µs"
+        p99_sym = "[PASS]" if m["p99_passed"] else "[FAIL]"
+        p99_val = f"{m['p99_ms']:.4f} ms / {m['p99_ms']*1000:.1f} us"
         print(f"   [2] P99 Latency    <= {m['p99_threshold_ms']:.1f} ms: {p99_color}{p99_sym} ({p99_val}){RESET}")
         print("=" * 65 + "\n")
 

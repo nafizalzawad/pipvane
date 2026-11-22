@@ -92,28 +92,8 @@ jobs:
       - name: Print & Summarize Failed Tests
         if: always()
         run: |
-          python -c "
-          import xml.etree.ElementTree as ET, os
-          if os.path.exists('pytest-results.xml'):
-              tree = ET.parse('pytest-results.xml')
-              root = tree.getroot()
-              failures = []
-              for tc in root.iter('testcase'):
-                  for f in tc.iter('failure'):
-                      failures.append(f'{tc.attrib.get(\"classname\")}.{tc.attrib.get(\"name\")}: {f.text[:250]}')
-                  for e in tc.iter('error'):
-                      failures.append(f'{tc.attrib.get(\"classname\")}.{tc.attrib.get(\"name\")}: {e.text[:250]}')
-              print(f'=== PYTEST SUMMARY: {len(failures)} FAILURES ===')
-              for f in failures:
-                  print('FAIL:', f)
-              summary_file = os.environ.get('GITHUB_STEP_SUMMARY')
-              if summary_file:
-                  with open(summary_file, 'a', encoding='utf-8') as out:
-                      out.write(f'### Pytest Test Results: {len(failures)} Failures\n\n')
-                      for f in failures:
-                          out.write(f'- `{f}`\n')
-          "
-        shell: powershell
+          python qa/report_pytest_failures.py pytest-results.xml
+        shell: cmd
 
       - name: Upload Pytest Test Results
         if: always()

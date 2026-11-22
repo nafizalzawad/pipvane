@@ -1,0 +1,204 @@
+{
+  "tenant": {
+    "friendly_name": "Pipvane Cloud Control Plane",
+    "support_email": "support@pipvane.com",
+    "enabled_locales": ["en"],
+    "flags": {
+      "enable_client_connections": true,
+      "revoke_refresh_token_grant": true
+    }
+  },
+  "resourceServers": [
+    {
+      "name": "Pipvane Cloud Control Plane API",
+      "identifier": "https://api.pipvane.com/v3",
+      "signing_alg": "RS256",
+      "token_lifetime": 2592000,
+      "token_lifetime_for_web": 7200,
+      "enforce_policies": true,
+      "token_dialect": "access_token",
+      "skip_consent_for_verifiable_first_party_clients": true,
+      "scopes": [
+        {
+          "value": "read:license",
+          "description": "Read active license status, tier, and account limits"
+        },
+        {
+          "value": "issue:license",
+          "description": "Issue fresh 30-day RS256 cryptographically signed license tokens"
+        },
+        {
+          "value": "refresh:license",
+          "description": "Perform 7-day silent refresh and automatic token rotation"
+        },
+        {
+          "value": "revoke:license",
+          "description": "Revoke compromised license or device JTI tokens"
+        },
+        {
+          "value": "telemetry:write",
+          "description": "Ingest anonymized execution latency and heartbeat telemetry"
+        },
+        {
+          "value": "lease:coordinate",
+          "description": "Acquire and heartbeat active-passive failover execution locks"
+        }
+      ]
+    }
+  ],
+  "clients": [
+    {
+      "name": "Pipvane Local Engine M2M Client",
+      "app_type": "non_interactive",
+      "description": "Machine-to-Machine client for Pipvane local agent to interact with the Cloud Control Plane",
+      "grant_types": ["client_credentials"],
+      "token_endpoint_auth_method": "client_secret_post",
+      "jwt_configuration": {
+        "alg": "RS256",
+        "lifetime_in_seconds": 2592000
+      }
+    },
+    {
+      "name": "Pipvane Desktop Application",
+      "app_type": "native",
+      "description": "Desktop UI interactive application client using PKCE flow",
+      "grant_types": ["authorization_code", "refresh_token"],
+      "callbacks": [
+        "http://127.0.0.1:45823/callback",
+        "http://localhost:45823/callback",
+        "https://pipvane.com/callback"
+      ],
+      "allowed_logout_urls": [
+        "http://127.0.0.1:45823/logout",
+        "http://localhost:45823/logout",
+        "https://pipvane.com/logout"
+      ],
+      "token_endpoint_auth_method": "none",
+      "oidc_conformant": true,
+      "jwt_configuration": {
+        "alg": "RS256",
+        "lifetime_in_seconds": 2592000
+      },
+      "refresh_token": {
+        "rotation_type": "rotating",
+        "expiration_type": "expiring",
+        "token_lifetime": 2592000,
+        "idle_token_lifetime": 604800,
+        "infinite_idle_token_lifetime": false,
+        "infinite_token_lifetime": false
+      }
+    }
+  ],
+  "clientGrants": [
+    {
+      "client_id": "Pipvane Local Engine M2M Client",
+      "audience": "https://api.pipvane.com/v3",
+      "scope": [
+        "read:license",
+        "issue:license",
+        "refresh:license",
+        "telemetry:write",
+        "lease:coordinate"
+      ]
+    }
+  ],
+  "roles": [
+    {
+      "name": "Pipvane Standard License",
+      "description": "Standard tier user - entitlement for up to 4 concurrent MT4/MT5 terminals",
+      "permissions": [
+        {
+          "resource_server_identifier": "https://api.pipvane.com/v3",
+          "permission_name": "read:license"
+        },
+        {
+          "resource_server_identifier": "https://api.pipvane.com/v3",
+          "permission_name": "refresh:license"
+        },
+        {
+          "resource_server_identifier": "https://api.pipvane.com/v3",
+          "permission_name": "telemetry:write"
+        },
+        {
+          "resource_server_identifier": "https://api.pipvane.com/v3",
+          "permission_name": "lease:coordinate"
+        }
+      ]
+    },
+    {
+      "name": "Pipvane Pro License",
+      "description": "Pro tier user - entitlement for up to 7 concurrent MT4/MT5 terminals",
+      "permissions": [
+        {
+          "resource_server_identifier": "https://api.pipvane.com/v3",
+          "permission_name": "read:license"
+        },
+        {
+          "resource_server_identifier": "https://api.pipvane.com/v3",
+          "permission_name": "issue:license"
+        },
+        {
+          "resource_server_identifier": "https://api.pipvane.com/v3",
+          "permission_name": "refresh:license"
+        },
+        {
+          "resource_server_identifier": "https://api.pipvane.com/v3",
+          "permission_name": "telemetry:write"
+        },
+        {
+          "resource_server_identifier": "https://api.pipvane.com/v3",
+          "permission_name": "lease:coordinate"
+        }
+      ]
+    },
+    {
+      "name": "Pipvane Founder Edition",
+      "description": "Founder cohort license - Edition: Founder with permanent 4/7 terminal entitlement and prioritized support",
+      "permissions": [
+        {
+          "resource_server_identifier": "https://api.pipvane.com/v3",
+          "permission_name": "read:license"
+        },
+        {
+          "resource_server_identifier": "https://api.pipvane.com/v3",
+          "permission_name": "issue:license"
+        },
+        {
+          "resource_server_identifier": "https://api.pipvane.com/v3",
+          "permission_name": "refresh:license"
+        },
+        {
+          "resource_server_identifier": "https://api.pipvane.com/v3",
+          "permission_name": "telemetry:write"
+        },
+        {
+          "resource_server_identifier": "https://api.pipvane.com/v3",
+          "permission_name": "lease:coordinate"
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "name": "Add Pipvane Custom License Claims",
+      "supported_triggers": [
+        {
+          "id": "post-login",
+          "version": "v3"
+        }
+      ],
+      "code": "exports.onExecutePostLogin = async (event, api) => {\n  const namespace = 'https://pipvane.com/claims/';\n  const roles = event.authorization && event.authorization.roles ? event.authorization.roles : [];\n  const appMetadata = event.user.app_metadata || {};\n  const isFounder = roles.includes('Pipvane Founder Edition') || roles.includes('Founder') || appMetadata.edition === 'Founder' || appMetadata.is_founder === true;\n  const edition = isFounder ? 'Founder' : (appMetadata.edition || 'Standard');\n  const isProPack = roles.includes('Pipvane Pro License') || appMetadata.tier === 'Pro' || appMetadata.pack === 'pro_7';\n  let tier = isProPack ? 'Pro' : 'Standard';\n  let accountLimit = isProPack ? 7 : 4;\n  const licenseId = appMetadata.license_id ? appMetadata.license_id : event.user.user_id;\n  api.accessToken.setCustomClaim(namespace + 'edition', edition);\n  api.accessToken.setCustomClaim(namespace + 'tier', tier);\n  api.accessToken.setCustomClaim(namespace + 'account_limit', accountLimit);\n  api.accessToken.setCustomClaim(namespace + 'license_id', licenseId);\n  api.accessToken.setCustomClaim(namespace + 'priority_support', isFounder);\n  api.idToken.setCustomClaim(namespace + 'edition', edition);\n  api.idToken.setCustomClaim(namespace + 'tier', tier);\n  api.idToken.setCustomClaim(namespace + 'account_limit', accountLimit);\n  api.idToken.setCustomClaim(namespace + 'license_id', licenseId);\n  api.idToken.setCustomClaim(namespace + 'priority_support', isFounder);\n};",
+      "runtime": "node18",
+      "status": "built",
+      "all_changes_deployed": true
+    }
+  ],
+  "triggers": {
+    "post-login": [
+      {
+        "action_name": "Add Pipvane Custom License Claims",
+        "display_name": "Add Pipvane Custom License Claims"
+      }
+    ]
+  }
+}

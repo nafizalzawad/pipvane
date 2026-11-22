@@ -1,0 +1,26 @@
+LIBRARY PipvaneBridge
+EXPORTS
+    GetNextOrderIntent
+    ReportTerminalState
+    ReportExecutionFill
+    ReportPositionsSnapshot
+    InitializeBridgeW
+    InitializeBridgeA
+    ShutdownBridge
+    IsBridgeConnected
+    Pipvane_InitW
+    Pipvane_InitA
+    Pipvane_Shutdown
+    Pipvane_IsConnected
+    Pipvane_PollOrderIntent
+    Pipvane_PollOrderIntentDirect
+    Pipvane_WaitForOrderIntent
+    Pipvane_SendAccountState
+    Pipvane_SendExecutionFeedback
+    Pipvane_SendCapabilities
+    Pipvane_SendPositionsSync
+    Pipvane_VerifyFileSHA256
+    Pipvane_GetLastTransitLatencyNs
+    Pipvane_GetProcessedIntentsCount
+    Pipvane_GetDroppedIntentsCount
+    Pipvane_GetLastError

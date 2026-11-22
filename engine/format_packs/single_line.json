@@ -1,0 +1,44 @@
+{
+  "pack_id": "single_line",
+  "name": "Single-Line Inline Style",
+  "description": "Compact single-line signals with inline tokens and minimal punctuation",
+  "version": "1.0.0",
+  "priority": 15,
+  "style": "single_line",
+  "classification_markers": {
+    "signal": ["^(?:.*\\b(BUY|SELL)\\b.*\\b(SL|TP)\\b.*)$"],
+    "update": ["^(?:.*\\b(MODIFY|CLOSE|BREAKEVEN|SL\\s+BE)\\b.*)$"],
+    "chatter_indicators": ["\\b(VIP|CHANNEL|CHAT|LINK)\\b"]
+  },
+  "patterns": {
+    "symbol": [
+      "\\b([A-Z]{3}/?[A-Z]{3}|GOLD|XAUUSD|US30|DJ30|WS30|NAS100|USTEC|NDX|SPX500|US500|BTCUSD|ETHUSD)\\b"
+    ],
+    "side": [
+      "\\b(BUY|LONG)\\b",
+      "\\b(SELL|SHORT)\\b"
+    ],
+    "order_type": {
+      "limit": "\\b(LIMIT|BUY\\s+LIMIT|SELL\\s+LIMIT)\\b",
+      "stop": "\\b(STOP|BUY\\s+STOP|SELL\\s+STOP)\\b(?!\\s*LOSS)"
+    },
+    "entry": [
+      "(?:BUY|SELL|LIMIT|STOP|at|@)\\s+(?:[A-Z0-9/]+\\s+)?([0-9]+\\.?[0-9]*)",
+      "(?:entry|at|@)\\s*([0-9]+\\.?[0-9]*)"
+    ],
+    "stop_loss": [
+      "\\bSL[:\\s]+([0-9]+\\.?[0-9]*)",
+      "\\bSTOP[:\\s]+([0-9]+\\.?[0-9]*)"
+    ],
+    "take_profit": [
+      "\\bTP\\d?[:\\s]+([0-9]+\\.?[0-9]*)",
+      "\\bTARGET\\d?[:\\s]+([0-9]+\\.?[0-9]*)"
+    ],
+    "modifiers": {
+      "partial_close": "(?:CLOSE|SECURE)\\s*([0-9]+(?:\\.[0-9]+)?)\\s*%",
+      "breakeven": "\\b(SL\\s+BE|BREAKEVEN)\\b",
+      "full_close": "\\b(CLOSE|EXIT)\\b",
+      "cancel_pending": "\\b(CANCEL)\\b"
+    }
+  }
+}

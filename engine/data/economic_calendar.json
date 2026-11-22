@@ -1,0 +1,79 @@
+[
+  {
+    "id": "usd_nfp_001",
+    "title": "Non-Farm Employment Change (NFP)",
+    "country": "US",
+    "currency": "USD",
+    "impact": "HIGH",
+    "timestamp": 1700000000,
+    "date_iso": "2023-11-14T13:30:00Z",
+    "forecast": "180K",
+    "previous": "150K"
+  },
+  {
+    "id": "usd_cpi_002",
+    "title": "Consumer Price Index (CPI) m/m",
+    "country": "US",
+    "currency": "USD",
+    "impact": "HIGH",
+    "timestamp": 1700086400,
+    "date_iso": "2023-11-15T13:30:00Z",
+    "forecast": "0.3%",
+    "previous": "0.4%"
+  },
+  {
+    "id": "eur_ecb_003",
+    "title": "ECB Main Refinancing Rate Decision",
+    "country": "EU",
+    "currency": "EUR",
+    "impact": "HIGH",
+    "timestamp": 1700100000,
+    "date_iso": "2023-11-15T17:16:40Z",
+    "forecast": "4.50%",
+    "previous": "4.50%"
+  },
+  {
+    "id": "gbp_boe_004",
+    "title": "BOE Official Bank Rate",
+    "country": "GB",
+    "currency": "GBP",
+    "impact": "HIGH",
+    "timestamp": 1700120000,
+    "date_iso": "2023-11-15T22:50:00Z",
+    "forecast": "5.25%",
+    "previous": "5.25%"
+  },
+  {
+    "id": "jpy_boj_005",
+    "title": "BOJ Policy Rate Decision",
+    "country": "JP",
+    "currency": "JPY",
+    "impact": "HIGH",
+    "timestamp": 1700140000,
+    "date_iso": "2023-11-16T04:23:20Z",
+    "forecast": "-0.10%",
+    "previous": "-0.10%"
+  },
+  {
+    "id": "eur_pmi_006",
+    "title": "German Flash Manufacturing PMI",
+    "country": "DE",
+    "currency": "EUR",
+    "impact": "MEDIUM",
+    "timestamp": 1700050000,
+    "date_iso": "2023-11-15T03:23:20Z",
+    "forecast": "41.2",
+    "previous": "40.8"
+  },
+  {
+    "id": "usd_oil_007",
+    "title": "Crude Oil Inventories",
+    "country": "US",
+    "currency": "USD",
+    "impact": "LOW",
+    "timestamp": 1700060000,
+    "date_iso": "2023-11-15T06:10:00Z",
+    "forecast": "-1.2M",
+    "previous": "-3.1M"
+  }
+]

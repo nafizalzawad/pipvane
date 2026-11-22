@@ -1,0 +1,38 @@
+[Unit]
+Description=Pipvane v3 - 30-Day Telegram Safety Mode Soak & Chaos Test Orchestrator
+After=network.target network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=pipvane
+Group=pipvane
+WorkingDirectory=/opt/pipvane
+Environment="PYTHONUNBUFFERED=1"
+Environment="APPDATA=/opt/pipvane/data"
+Environment="PYTHONPATH=/opt/pipvane"
+
+# Command runs the Soak Orchestrator for 30 continuous days (720 hours)
+ExecStart=/opt/pipvane/venv/bin/python qa/chaos/soak_orchestrator.py --duration-hours 720 --output-dir /opt/pipvane/data/soak_telemetry
+
+# Automatic restart on transient OS/network failures
+Restart=always
+RestartSec=10
+
+# Fail immediately and halt service if terminated due to ban assertion
+RestartPreventExitStatus=1
+
+# Process & Resource Sandboxing
+KillMode=mixed
+TimeoutStopSec=30
+MemoryMax=1.5G
+CPUQuota=100%
+LimitNOFILE=65535
+
+# Logging to standard journald
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=pipvane-soak
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,43 @@
+{
+  "pack_id": "reply_update",
+  "name": "Reply & Position Update Style",
+  "description": "Modification directives for active orders (Move SL, Breakeven, Partial Closes, Cancellations)",
+  "version": "1.0.0",
+  "priority": 25,
+  "style": "reply_update",
+  "classification_markers": {
+    "signal": [],
+    "update": [
+      "\\b(MODIFY|UPDATE|SL\\s+TO|CLOSE|SECURE|BREAKEVEN|SL\\s+BE|CANCEL|TP\\d?\\s+HIT)\\b"
+    ],
+    "chatter_indicators": ["\\b(CONGRATS|PROFIT|VIP|FEEDBACK)\\b"]
+  },
+  "patterns": {
+    "symbol": [
+      "\\b([A-Z]{3}/?[A-Z]{3}|GOLD|XAUUSD|US30|DJ30|WS30|NAS100|USTEC|NDX|SPX500|US500|BTCUSD|ETHUSD)\\b"
+    ],
+    "side": [
+      "\\b(BUY|LONG)\\b",
+      "\\b(SELL|SHORT)\\b"
+    ],
+    "order_type": {
+      "update": "\\b(MODIFY|UPDATE|CHANGE|ADJUST)\\b"
+    },
+    "entry": [
+      "(?:@|at|entry[:\\s]*)\\s*([0-9]+\\.?[0-9]*)"
+    ],
+    "stop_loss": [
+      "(?:SL|STOP[\\s_-]?LOSS)?\\s*TO\\s+([0-9]+\\.?[0-9]*)",
+      "(?:SL|STOP[\\s_-]?LOSS)[:\\s]*([0-9]+\\.?[0-9]*)"
+    ],
+    "take_profit": [
+      "(?:NEW\\s+TP|TP\\d?)[:\\s]*([0-9]+\\.?[0-9]*)"
+    ],
+    "modifiers": {
+      "partial_close": "(?:CLOSE|SECURE|BOOK|LOCK)\\s*([0-9]+(?:\\.[0-9]+)?)\\s*%",
+      "breakeven": "\\b(SL\\s+TO\\s+BE|SL\\s+TO\\s+ENTRY|SL\\s+TO\\s+BREAKEVEN|MOVE\\s+SL\\s+TO\\s+BE|BREAKEVEN|RISK\\s+FREE)\\b",
+      "full_close": "\\b(CLOSE\\s+NOW|CLOSE\\s+ALL|FULL\\s+CLOSE|EXIT\\s+NOW|EXIT\\s+ALL)\\b",
+      "cancel_pending": "\\b(CANCEL\\s+ORDER|CANCEL\\s+PENDING|DELETE\\s+PENDING|CANCEL)\\b"
+    }
+  }
+}

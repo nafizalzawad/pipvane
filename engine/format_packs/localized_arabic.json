@@ -1,0 +1,48 @@
+{
+  "pack_id": "localized_arabic",
+  "name": "Localized Arabic Style",
+  "description": "Multi-lingual Arabic-Indic signal patterns with regional keywords and localized labels",
+  "version": "1.0.0",
+  "priority": 20,
+  "style": "localized_arabic",
+  "classification_markers": {
+    "signal": [
+      "(?:شراء|بيع|صفقة)",
+      "\\b(BUY|SELL)\\b",
+      "(?:دخول|وقف|هدف)"
+    ],
+    "update": [
+      "(?:تعديل|إغلاق|حجز\\s+أرباح|نقل\\s+الوقف|تأمين)"
+    ],
+    "chatter_indicators": ["(?:قناة|اشتراك|رابط|تواصل)"]
+  },
+  "patterns": {
+    "symbol": [
+      "\\b(XAUUSD|الذهب|GOLD|EURUSD|GBPUSD|USDJPY|US30|NAS100|BTCUSD)\\b"
+    ],
+    "side": [
+      "(?:شراء|BUY|LONG)",
+      "(?:بيع|SELL|SHORT)"
+    ],
+    "order_type": {
+      "limit": "\\b(LIMIT|أمر\\s+معلق)\\b",
+      "stop": "\\b(STOP)\\b(?!\\s*LOSS)"
+    },
+    "entry": [
+      "(?:دخول|سعر\\s+الدخول|entry|@|at)[:\\s]*([0-9]+\\.?[0-9]*)\\s*-\\s*([0-9]+\\.?[0-9]*)",
+      "(?:دخول|سعر\\s+الدخول|entry|@|at)[:\\s]*([0-9]+\\.?[0-9]*)"
+    ],
+    "stop_loss": [
+      "(?:وقف\\s*الخسارة|الوقف|SL|STOP[\\s_-]?LOSS)[:\\s]*([0-9]+\\.?[0-9]*)"
+    ],
+    "take_profit": [
+      "(?:هدف\\s*(?:أول|ثان|ثالث|رابع|خامس|سادس|سابع|ثامن|تاسع|عاشر|\\d+)?|أهداف|TP\\d?)[:\\s]*([0-9]+\\.?[0-9]*)"
+    ],
+    "modifiers": {
+      "partial_close": "(?:إغلاق|حجز|اغلاق)\\s*([0-9]+(?:\\.[0-9]+)?)\\s*%",
+      "breakeven": "(?:نقل\\s+الوقف\\s+لنقطة\\s+الدخول|تأمين\\s+الصفقة|دخول\\s+BE|الوقف\\s+على\\s+الدخول)",
+      "full_close": "(?:إغلاق\\s+كلي|خروج\\s+الآن|اغلاق\\s+كامل)",
+      "cancel_pending": "(?:إلغاء\\s+الأمر|الغاء\\s+الامر|حذف\\s+الامر)"
+    }
+  }
+}

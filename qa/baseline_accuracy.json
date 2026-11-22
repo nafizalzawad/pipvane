@@ -1,0 +1,10 @@
+{
+  "description": "Pipvane v3 Parser Accuracy Baseline from Previous Main Branch Build",
+  "branch": "main",
+  "build_id": "main-latest",
+  "accuracy": 0.985,
+  "threshold": 0.98,
+  "max_regression_allowance": 0.005,
+  "total_signals": 1500,
+  "updated_at": "2026-11-20T23:59:59Z"
+}

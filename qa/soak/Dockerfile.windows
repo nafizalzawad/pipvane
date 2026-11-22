@@ -1,0 +1,36 @@
+# escape=`
+# ==============================================================================
+# Pipvane v3: Sprint 13 - Constrained Hardware Profile Soak Environment
+# Base Image: Windows Server Core 2022 with Python 3.11
+# Target Hardware Profile: 2 vCPUs, 4 GB RAM
+# ==============================================================================
+
+FROM mcr.microsoft.com/windows/servercore:ltsc2022
+
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+
+# Install Python 3.11.4
+ENV PYTHON_VERSION 3.11.4
+RUN Invoke-WebRequest -Uri "https://www.python.org/ftp/python/3.11.4/python-3.11.4-amd64.exe" -OutFile "python-installer.exe"; `
+    Start-Process "python-installer.exe" -ArgumentList '/quiet', 'InstallAllUsers=1', 'PrependPath=1', 'TargetDir=C:\Python311' -Wait; `
+    Remove-Item "python-installer.exe" -Force
+
+ENV PATH="C:\Python311;C:\Python311\Scripts;${PATH}"
+
+# Install Pip dependencies
+RUN python -m pip install --upgrade pip; `
+    python -m pip install pytest pytest-cov psutil
+
+# Set up working directory
+WORKDIR C:\Pipvane
+
+# Copy project files
+COPY . C:\Pipvane
+
+# Set environment variables
+ENV PIPVANE_ENV=production_soak
+ENV PIPVANE_SOAK_HOURS=48
+ENV PYTHONUNBUFFERED=1
+
+# Default Entrypoint: Launches 48-Hour Multi-Terminal Soak Test with Resource Monitor
+CMD ["python", "qa/soak/terminal_soak_runner.py", "--duration-hours", "48", "--interval", "60", "--terminals", "7"]

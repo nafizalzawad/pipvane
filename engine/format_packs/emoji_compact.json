@@ -1,0 +1,48 @@
+{
+  "pack_id": "emoji_compact",
+  "name": "Emoji Compact Style",
+  "description": "Visual emoji-heavy signals normalized with directional and domain tokens",
+  "version": "1.0.0",
+  "priority": 12,
+  "style": "emoji_compact",
+  "classification_markers": {
+    "signal": [
+      "\\[DIR:(BUY|SELL)\\]",
+      "\\b(BUY|SELL)\\b",
+      "\\[TOKEN:(TP|SL|ENTRY)\\]"
+    ],
+    "update": [
+      "\\b(MODIFY|UPDATE|CLOSE|SECURE)\\b"
+    ],
+    "chatter_indicators": ["\\b(VIP|SUBSCRIBE|JOIN)\\b"]
+  },
+  "patterns": {
+    "symbol": [
+      "\\b([A-Z]{3}/?[A-Z]{3}|GOLD|XAUUSD|US30|DJ30|WS30|NAS100|USTEC|NDX|SPX500|US500|BTCUSD|ETHUSD)\\b"
+    ],
+    "side": [
+      "\\[DIR:BUY\\]|\\bBUY\\b",
+      "\\[DIR:SELL\\]|\\bSELL\\b"
+    ],
+    "order_type": {
+      "limit": "\\b(LIMIT|BUY\\s+LIMIT|SELL\\s+LIMIT)\\b",
+      "stop": "\\b(STOP|BUY\\s+STOP|SELL\\s+STOP)\\b(?!\\s*LOSS)"
+    },
+    "entry": [
+      "(?:\\[TOKEN:ENTRY\\]|ENTRY|entry|at|@)[:\\s]*([0-9]+\\.?[0-9]*)\\s*-\\s*([0-9]+\\.?[0-9]*)",
+      "(?:\\[TOKEN:ENTRY\\]|ENTRY|entry|at|@)[:\\s]*([0-9]+\\.?[0-9]*)"
+    ],
+    "stop_loss": [
+      "(?:\\[TOKEN:SL\\]|SL|STOP[\\s_-]?LOSS)[:\\s]*([0-9]+\\.?[0-9]*)"
+    ],
+    "take_profit": [
+      "(?:\\[TOKEN:TP\\]|TP\\d?)[:\\s]*([0-9]+\\.?[0-9]*)"
+    ],
+    "modifiers": {
+      "partial_close": "(?:CLOSE|SECURE)\\s*([0-9]+(?:\\.[0-9]+)?)\\s*%",
+      "breakeven": "\\b(SL\\s+TO\\s+BE|BREAKEVEN)\\b",
+      "full_close": "\\b(CLOSE\\s+ALL|EXIT)\\b",
+      "cancel_pending": "\\b(CANCEL)\\b"
+    }
+  }
+}

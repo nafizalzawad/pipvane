@@ -1,0 +1,32 @@
+version: '3.8'
+
+# ==============================================================================
+# Pipvane v3: Sprint 13 - Constrained Hardware Profile Soak Environment
+# Enforces strictly 2 vCPUs and 4GB RAM resource caps (SLA VR-3.1 & FR-7.5)
+# ==============================================================================
+
+services:
+  pipvane-soak-runner:
+    build:
+      context: ../..
+      dockerfile: qa/soak/Dockerfile.windows
+    image: pipvane/soak-runner:latest
+    container_name: pipvane_soak_2c4g
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 4096M
+        reservations:
+          cpus: '2.0'
+          memory: 4096M
+    environment:
+      - PIPVANE_ENV=production_soak
+      - PIPVANE_SOAK_HOURS=48
+      - PIPVANE_MAX_ENGINE_RAM_MB=400
+      - PIPVANE_MAX_SYSTEM_RAM_PCT=98
+    volumes:
+      - ../../qa/soak/logs:C:/Pipvane/qa/soak/logs
+    command: >
+      powershell -Command "python qa/soak/terminal_soak_runner.py --duration-hours 48 --interval 60 --terminals 7 --output qa/soak/logs/resource_soak_telemetry.csv"
+    restart: "no"

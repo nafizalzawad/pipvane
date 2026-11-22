@@ -1,0 +1,89 @@
+# =============================================================================
+# Pipvane v3 Git Ignore Configuration
+# =============================================================================
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+*.log
+
+# --- Node.js & Frontend ---
+node_modules/
+frontend/node_modules/
+cloud/node_modules/
+frontend/.next/
+frontend/out/
+.npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# --- C++ & Native Build Artifacts ---
+*.obj
+*.o
+*.lib
+*.a
+*.exp
+*.pdb
+*.ilk
+*.idb
+*.tlog
+*.ipch
+bridge/build_*/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+
+# --- Runtime Databases & Local Secrets ---
+*.db
+*.db-wal
+*.db-shm
+*.corrupt.*
+vault.db
+ledger.db
+orchestrator.db
+session.token
+tdlib_data/
+tdlib_files/
+logs/
+*.jtl
+
+# --- Operating System & IDE ---
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+*.swo
+temp/
+*.tmp

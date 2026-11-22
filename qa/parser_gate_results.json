@@ -1,0 +1,165 @@
+{
+  "accuracy": 1.0,
+  "passed_count": 5,
+  "total_count": 5,
+  "threshold": 0.98,
+  "passed_gate": true,
+  "results": [
+    {
+      "id": "SIG-001-MKT",
+      "category": "market_execution",
+      "passed": true,
+      "errors": [],
+      "actual": {
+        "action": "BUY",
+        "symbol": "XAUUSD",
+        "order_type": "MARKET",
+        "entry_price": 2650.5,
+        "stop_loss": 2640.0,
+        "take_profits": [
+          2670.0
+        ],
+        "is_modification": false,
+        "partial_close_pct": null
+      },
+      "expected": {
+        "action": "BUY",
+        "symbol": "XAUUSD",
+        "order_type": "MARKET",
+        "entry_price": 2650.5,
+        "stop_loss": 2640.0,
+        "take_profits": [
+          2670.0
+        ],
+        "is_modification": false,
+        "partial_close_pct": null
+      }
+    },
+    {
+      "id": "SIG-002-LMT",
+      "category": "limit_order",
+      "passed": true,
+      "errors": [],
+      "actual": {
+        "action": "SELL",
+        "symbol": "EURUSD",
+        "order_type": "LIMIT",
+        "entry_price": 1.0585,
+        "stop_loss": 1.062,
+        "take_profits": [
+          1.055,
+          1.052
+        ],
+        "is_modification": false,
+        "partial_close_pct": null
+      },
+      "expected": {
+        "action": "SELL",
+        "symbol": "EURUSD",
+        "order_type": "LIMIT",
+        "entry_price": 1.0585,
+        "stop_loss": 1.062,
+        "take_profits": [
+          1.055,
+          1.052
+        ],
+        "is_modification": false,
+        "partial_close_pct": null
+      }
+    },
+    {
+      "id": "SIG-003-LADDER",
+      "category": "multi_tp_ladder",
+      "passed": true,
+      "errors": [],
+      "actual": {
+        "action": "BUY",
+        "symbol": "US30",
+        "order_type": "MARKET",
+        "entry_price": 43800.0,
+        "stop_loss": 43600.0,
+        "take_profits": [
+          43900.0,
+          44000.0,
+          44150.0,
+          44300.0
+        ],
+        "is_modification": false,
+        "partial_close_pct": null
+      },
+      "expected": {
+        "action": "BUY",
+        "symbol": "US30",
+        "order_type": "MARKET",
+        "entry_price": 43800.0,
+        "stop_loss": 43600.0,
+        "take_profits": [
+          43900.0,
+          44000.0,
+          44150.0,
+          44300.0
+        ],
+        "is_modification": false,
+        "partial_close_pct": null
+      }
+    },
+    {
+      "id": "SIG-004-MOD",
+      "category": "position_modification",
+      "passed": true,
+      "errors": [],
+      "actual": {
+        "action": "MODIFY",
+        "symbol": "GBPJPY",
+        "order_type": "UPDATE",
+        "entry_price": null,
+        "stop_loss": 195.2,
+        "take_profits": [],
+        "is_modification": true,
+        "partial_close_pct": 50.0
+      },
+      "expected": {
+        "action": "MODIFY",
+        "symbol": "GBPJPY",
+        "order_type": "UPDATE",
+        "entry_price": null,
+        "stop_loss": 195.2,
+        "take_profits": [],
+        "is_modification": true,
+        "partial_close_pct": 50.0
+      }
+    },
+    {
+      "id": "SIG-005-ARABIC",
+      "category": "arabic_indic_emoji_formatting",
+      "passed": true,
+      "errors": [],
+      "actual": {
+        "action": "BUY",
+        "symbol": "XAUUSD",
+        "order_type": "MARKET",
+        "entry_price": 2650.5,
+        "stop_loss": 2640.0,
+        "take_profits": [
+          2670.0,
+          2685.0
+        ],
+        "is_modification": false,
+        "partial_close_pct": null
+      },
+      "expected": {
+        "action": "BUY",
+        "symbol": "XAUUSD",
+        "order_type": "MARKET",
+        "entry_price": 2650.5,
+        "stop_loss": 2640.0,
+        "take_profits": [
+          2670.0,
+          2685.0
+        ],
+        "is_modification": false,
+        "partial_close_pct": null
+      }
+    }
+  ]
+}

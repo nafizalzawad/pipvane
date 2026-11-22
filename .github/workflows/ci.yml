@@ -87,7 +87,15 @@ jobs:
         env:
           PYTHONPATH: .
         run: |
-          python -m pytest qa/tests qa/chaos -v --durations=10
+          python -m pytest qa/tests qa/chaos -v --durations=10 --tb=short --junitxml=pytest-results.xml
+
+      - name: Upload Pytest Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pytest-results
+          path: pytest-results.xml
+          retention-days: 14
 
   # ============================================================================
   # STAGE 3: Parser CI Gate (Mandatory >= 98% Golden Set Accuracy & Regression)

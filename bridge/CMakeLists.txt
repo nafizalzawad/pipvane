@@ -21,7 +21,6 @@ endif()
 add_library(${BRIDGE_TARGET_NAME} SHARED
     ipc_bridge.cpp
     ipc_bridge.h
-    PipvaneBridge.def
 )
 
 target_include_directories(${BRIDGE_TARGET_NAME} PRIVATE
@@ -43,7 +42,7 @@ if (MSVC)
     #  /GL        : Whole program optimization
     #  /GS        : Buffer security check (Stack Canary)
     #  /guard:cf  : Control Flow Guard (CFG)
-    #  /W4        : Warning Level 4
+    #  /W3        : Warning Level 3
     #  /fp:fast   : Fast floating-point model
     #  /MP        : Multi-processor compilation
     target_compile_options(${BRIDGE_TARGET_NAME} PRIVATE
@@ -52,7 +51,7 @@ if (MSVC)
         /GL
         /GS
         /guard:cf
-        /W4
+        /W3
         /permissive-
         /fp:fast
         /MP

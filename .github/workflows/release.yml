@@ -42,7 +42,7 @@ jobs:
 
       - name: Compile 32-bit DLL (ipc_bridge_x86.dll)
         run: |
-          cmake --build bridge/build_x86 --config Release
+          cmake --build bridge/build_x86 --config Release --verbose
         shell: cmd
 
       - name: Configure CMake (64-bit x64 for MetaTrader 5)
@@ -52,7 +52,7 @@ jobs:
 
       - name: Compile 64-bit DLL (PipvaneBridge.dll)
         run: |
-          cmake --build bridge/build_x64 --config Release
+          cmake --build bridge/build_x64 --config Release --verbose
         shell: cmd
 
       - name: Stage Bridge DLL Artifacts

@@ -600,6 +600,9 @@ class IPCDispatcher:
         ctx = self._terminals.get(terminal_id)
         return ctx.account_state if ctx else None
 
+    # Defensive alias
+    get_latest_state = get_terminal_state
+
     def get_terminal_status(self, terminal_id: str) -> TerminalStatus:
         """Returns the current operational status of a terminal."""
         ctx = self._terminals.get(terminal_id)

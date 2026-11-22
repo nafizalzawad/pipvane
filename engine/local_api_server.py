@@ -558,7 +558,11 @@ class LocalAPIServer:
                 # Dynamically construct accounts from live IPC Dispatcher
                 term_list = []
                 for tid in ipc_dispatcher.get_registered_terminals():
-                    state = ipc_dispatcher.get_latest_state(tid)
+                    state = None
+                    if hasattr(ipc_dispatcher, "get_terminal_state"):
+                        state = ipc_dispatcher.get_terminal_state(tid)
+                    elif hasattr(ipc_dispatcher, "get_latest_state"):
+                        state = ipc_dispatcher.get_latest_state(tid)
                     entry = self._terminals.get(tid, {
                         "id": tid,
                         "name": f"Terminal {tid}",

@@ -993,6 +993,8 @@ class PipvaneMasterDaemon:
                 for tid, ctx in list(self.ipc_dispatcher._terminals.items()):
                     if not ctx.shm_writer.use_mock_buffer:
                         continue
+                    # Keep mock terminal heartbeat fresh
+                    ctx.last_heartbeat_time = time.time()
                     buf = ctx.shm_writer._get_buffer()
                     write_head = struct.unpack_from("<Q", buf, 64)[0]
                     read_tail = struct.unpack_from("<Q", buf, 128)[0]
